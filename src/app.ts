@@ -1,12 +1,12 @@
-import express from 'express';
+import express from 'express'
 
-const app = express();
-const port = 3000;
+import router from './router'
 
-app.get('/', (req, res) => {
-    res.send('The sedulous hyena ate the antelope!');
-});
+const app = express()
+const port = 3000
+
+app.use(router)
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
-});
+})
