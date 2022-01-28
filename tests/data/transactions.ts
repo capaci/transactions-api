@@ -10,7 +10,8 @@ const transactions: ITransaction[] = [
         card_number: '1234123412341234',
         card_owner_name: 'John Doe',
         card_expiration_date: '12/2030',
-        card_cvv: '123'
+        card_cvv: '123',
+        fee: 0.03
     },
     {
         id: 2,
@@ -21,7 +22,8 @@ const transactions: ITransaction[] = [
         card_number: '2341234123412345',
         card_owner_name: 'John Doe',
         card_expiration_date: '11/2030',
-        card_cvv: '321'                
+        card_cvv: '321',
+        fee: 0.05
     }
 ]
 

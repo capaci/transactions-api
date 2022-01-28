@@ -1,9 +1,10 @@
 import { TransactionRepositoryInMemory } from "../../src/repositories/transactionRepositoryInMemory";
-import { ITransaction } from "../../src/useCases/interfaces";
+import { IInputTransaction } from "../../src/useCases/interfaces";
 import { CreateTransaction } from "../../src/useCases/createTransaction";
 import fakeTransactions from "../data/transactions";
+import { PayableRepositoryInMemory } from "../../src/repositories/payableRepositoryInMemory";
 
-const inputTransaction: Omit<ITransaction, 'id'> = {
+const inputTransaction: IInputTransaction = {
     amount: 100,
     date: new Date(),
     method: 'credit_card',
@@ -17,10 +18,11 @@ describe('Test create of transactions use case', () => {
 
     test('should return empty transactions', async () => {
         const transactionRepository = new TransactionRepositoryInMemory();
-        const createTransactionUC = new CreateTransaction(transactionRepository);
+        const payableRepository = new PayableRepositoryInMemory();
+        const createTransactionUC = new CreateTransaction(transactionRepository, payableRepository);
 
         const result = await createTransactionUC.execute(inputTransaction);
-        const { id, ...transaction } = result;
+        const { id, fee, ...transaction } = result;
         expect(id).toBe(1);
         expect(transaction).toEqual(inputTransaction);
         expect(transactionRepository.transactions.length).toBe(1);
@@ -28,14 +30,15 @@ describe('Test create of transactions use case', () => {
 
     test('should append to existing transactions', async () => {
         const transactionRepository = new TransactionRepositoryInMemory();
+        const payableRepository = new PayableRepositoryInMemory();
         transactionRepository.transactions = [...fakeTransactions];
 
-        const createTransactionUC = new CreateTransaction(transactionRepository);
+        const createTransactionUC = new CreateTransaction(transactionRepository, payableRepository);
 
         await createTransactionUC.execute(inputTransaction);
 
         
-        const { id, ...transaction } = transactionRepository.transactions.slice(-1)[0];
+        const { id, fee, ...transaction } = transactionRepository.transactions.slice(-1)[0];
         expect(transaction).toEqual(inputTransaction);
         expect(transactionRepository.transactions.length).toBe(fakeTransactions.length + 1);
     })
