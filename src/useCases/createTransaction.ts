@@ -9,6 +9,8 @@ export class CreateTransaction {
     }
     
     async execute(transaction: Omit<ITransaction, 'id'>): Promise<ITransaction> {
+        transaction.card_number = transaction.card_number.slice(-4);
+
         return this.transactionRepository.create(transaction)
     }
 }
