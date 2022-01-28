@@ -1,5 +1,5 @@
 import { TransactionRepositoryInMemory } from "../../src/repositories/transactionRepositoryInMemory";
-import { ITransaction, ITransactionRepository, PaymentMethod } from "../../src/useCases/interfaces";
+import { ITransaction } from "../../src/useCases/interfaces";
 import { ListTransactions } from "../../src/useCases/listTransactions";
 
 const transactions: ITransaction[] = [

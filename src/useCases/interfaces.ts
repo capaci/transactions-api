@@ -4,7 +4,7 @@ export interface ITransaction {
     id: number;
     amount: number;
     date: Date;
-    description: string;
+    description?: string;
     method: PaymentMethod;
     card_number: string;
     card_owner_name: string;
@@ -24,5 +24,5 @@ export interface ITransactionRepository {
     transactions: ITransaction[];
 
     getAll(): Promise<ITransaction[]>;
-    create(transaction: ITransaction): Promise<ITransaction>;
+    create(transaction: Omit<ITransaction, 'id'>): Promise<ITransaction>;
 }

@@ -11,8 +11,9 @@ export class TransactionRepositoryInMemory implements ITransactionRepository {
         return Promise.resolve(this.transactions);
     }
 
-    async create(transaction: ITransaction): Promise<ITransaction> {
-        this.transactions.push(transaction);
-        return Promise.resolve(transaction);
+    async create(transaction: Omit<ITransaction, 'id'>): Promise<ITransaction> {
+        const newTransaction = {id: this.transactions.length + 1, ...transaction};
+        this.transactions.push(newTransaction);
+        return Promise.resolve(newTransaction);
     }
 }
